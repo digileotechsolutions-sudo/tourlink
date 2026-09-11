@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tourlink-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tourlink
+    ports:
+      - "5432:5432"
+    volumes:
+      - tourlink_postgres_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: tourlink-django
+    restart: unless-stopped
+    environment:
+      DJANGO_DEBUG: "false"
+      DJANGO_SECRET_KEY: "change-this-in-production"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      DJANGO_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/tourlink"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+volumes:
+  tourlink_postgres_data:

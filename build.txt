@@ -1,0 +1,128 @@
+﻿
+> tourlink@1.0.0 build
+> prisma generate && next build
+
+node.exe : Environment variables loaded from .env
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\node_modules\@prisma\client in 384ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+   ▲ Next.js 15.5.25
+   - Environments: .env
+
+   Creating an optimized production build ...
+> [PWA] Compile server
+> [PWA] Compile server
+> [PWA] Compile client (static)
+> [PWA] Auto register service worker with: I:\phpx\htdocs\TourLink\node_modules\next-pwa\register.js
+> [PWA] Service worker: I:\phpx\htdocs\TourLink\public\sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+ ✓ Compiled successfully in 16.9s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/66) ...
+   Generating static pages (16/66) 
+   Generating static pages (32/66) 
+   Generating static pages (49/66) 
+ ✓ Generating static pages (66/66)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                   Size  First Load JS
+┌ ○ /                                      1.53 kB         113 kB
+├ ○ /_not-found                              998 B         104 kB
+├ ○ /about                                   180 B         106 kB
+├ ƒ /admin                                 7.64 kB         110 kB
+├ ○ /admin/login                           1.87 kB         108 kB
+├ ƒ /api/admin/audit                         234 B         103 kB
+├ ƒ /api/admin/settings                      234 B         103 kB
+├ ƒ /api/admin/stats                         234 B         103 kB
+├ ƒ /api/admin/trips                         234 B         103 kB
+├ ƒ /api/admin/trips/[id]                    234 B         103 kB
+├ ƒ /api/admin/users                         234 B         103 kB
+├ ƒ /api/admin/verification                  234 B         103 kB
+├ ƒ /api/auth/login                          234 B         103 kB
+├ ƒ /api/auth/logout                         234 B         103 kB
+├ ƒ /api/auth/me                             234 B         103 kB
+├ ƒ /api/auth/register                       234 B         103 kB
+├ ƒ /api/auth/resend                         234 B         103 kB
+├ ƒ /api/auth/verify                         234 B         103 kB
+├ ƒ /api/bookings                            234 B         103 kB
+├ ƒ /api/bookings/[id]/cancel                234 B         103 kB
+├ ƒ /api/bookings/[id]/receipt               234 B         103 kB
+├ ƒ /api/conversations                       234 B         103 kB
+├ ƒ /api/conversations/[id]/messages         234 B         103 kB
+├ ƒ /api/favorites                           234 B         103 kB
+├ ƒ /api/health                              234 B         103 kB
+├ ƒ /api/mpesa/callback                      234 B         103 kB
+├ ƒ /api/notifications                       234 B         103 kB
+├ ƒ /api/operator/bookings                   234 B         103 kB
+├ ƒ /api/operator/bookings/[id]              234 B         103 kB
+├ ƒ /api/operator/catalog                    234 B         103 kB
+├ ƒ /api/operator/profile                    234 B         103 kB
+├ ƒ /api/operator/trips                      234 B         103 kB
+├ ƒ /api/operator/trips/[id]                 234 B         103 kB
+├ ƒ /api/operator/verification               234 B         103 kB
+├ ƒ /api/owner/operators                     234 B         103 kB
+├ ƒ /api/owner/vehicles                      234 B         103 kB
+├ ƒ /api/owner/vehicles/[id]                 234 B         103 kB
+├ ƒ /api/owner/vehicles/[id]/availability    234 B         103 kB
+├ ƒ /api/payments/mpesa/stk                  234 B         103 kB
+├ ƒ /api/profile                             234 B         103 kB
+├ ƒ /api/reviews                             234 B         103 kB
+├ ƒ /api/trips                               234 B         103 kB
+├ ○ /compare                               3.33 kB         115 kB
+├ ƒ /dashboard                               178 B         110 kB
+├ ƒ /dashboard/analytics                     168 B         106 kB
+├ ƒ /dashboard/bookings                    4.48 kB         110 kB
+├ ƒ /dashboard/company                     2.69 kB         105 kB
+├ ƒ /dashboard/customers                     180 B         106 kB
+├ ƒ /dashboard/earnings                      168 B         106 kB
+├ ƒ /dashboard/favorites                     186 B         111 kB
+├ ƒ /dashboard/listings                    2.37 kB         108 kB
+├ ƒ /dashboard/listings/[id]/edit            128 B         110 kB
+├ ƒ /dashboard/listings/new                  128 B         110 kB
+├ ƒ /dashboard/messages                    2.94 kB         106 kB
+├ ƒ /dashboard/notifications                 234 B         103 kB
+├ ƒ /dashboard/past                          186 B         111 kB
+├ ƒ /dashboard/payments                      180 B         106 kB
+├ ƒ /dashboard/profile                     2.45 kB         105 kB
+├ ƒ /dashboard/receipts/[id]               1.14 kB         107 kB
+├ ƒ /dashboard/reviews                     1.96 kB         108 kB
+├ ƒ /dashboard/settings                     2.3 kB         105 kB
+├ ƒ /dashboard/upcoming                      186 B         111 kB
+├ ƒ /dashboard/vehicles                    4.02 kB         110 kB
+├ ƒ /dashboard/verification                2.61 kB         105 kB
+├ ○ /destinations                            186 B         111 kB
+├ ○ /how-it-works                            180 B         106 kB
+├ ○ /login                                 1.87 kB         108 kB
+├ ƒ /operators/[slug]                      1.53 kB         113 kB
+├ ○ /privacy                                 180 B         106 kB
+├ ƒ /register                              1.87 kB         108 kB
+├ ○ /robots.txt                              234 B         103 kB
+├ ○ /sitemap.xml                             234 B         103 kB
+├ ○ /terms                                   180 B         106 kB
+├ ƒ /trips                                 2.72 kB         114 kB
+├ ƒ /trips/[slug]                          4.02 kB         115 kB
+├ ƒ /vehicles                              2.72 kB         114 kB
+└ ƒ /vehicles/[slug]                       3.55 kB         115 kB
++ First Load JS shared by all               103 kB
+  ├ chunks/1255-7316b50163a428e6.js        46.4 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js    54.2 kB
+  └ other shared chunks (total)               2 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

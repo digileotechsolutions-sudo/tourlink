@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+.env
+.env*.local
+!.env.example
+*.log
+*.tsbuildinfo
+prisma/dev.db
+__pycache__/
+*.py[cod]
+django.sqlite3
+staticfiles/
+.venv/
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
