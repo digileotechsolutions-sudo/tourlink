@@ -1,0 +1,2 @@
+"use client";
+export default function ErrorPage({ reset }: { reset: () => void }) { return <main className="grid min-h-[60vh] place-items-center bg-mist px-6 text-center"><div><p className="eyebrow">A small detour</p><h1 className="display mt-2 text-4xl font-bold">That did not load.</h1><p className="mt-3 text-sm text-slate-500">Try the road again. Your saved plans are still safe.</p><button onClick={reset} className="mt-6 rounded-full bg-ink px-5 py-3 text-sm font-extrabold text-white">Try again</button></div></main>; }

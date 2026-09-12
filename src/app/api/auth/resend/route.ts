@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { isOtpDeliveryConfigured, isOtpDevelopmentMode, issueOtp } from "@/lib/otp";
+import { prisma } from "@/lib/prisma";
+
+export async function POST(request: Request) { try { const input = z.object({ userId: z.string(), channel: z.enum(["EMAIL", "PHONE"]) }).parse(await request.json()); if (!isOtpDeliveryConfigured() && !isOtpDevelopmentMode()) return NextResponse.json({ error: "Account verification delivery is not configured." }, { status: 503 }); const user = await prisma.user.findUnique({ where: { id: input.userId }, select: { email: true, phone: true, emailVerifiedAt: true, phoneVerifiedAt: true } }); if (!user) return NextResponse.json({ error: "Account not found." }, { status: 404 }); if (input.channel === "EMAIL" && user.emailVerifiedAt) return NextResponse.json({ error: "Email is already verified." }, { status: 400 }); if (input.channel === "PHONE" && user.phoneVerifiedAt) return NextResponse.json({ error: "Phone is already verified." }, { status: 400 }); const code = await issueOtp(input.userId, input.channel, input.channel === "EMAIL" ? user.email : user.phone || ""); return NextResponse.json({ sent: true, devOtp: code }); } catch { return NextResponse.json({ error: "We could not resend that verification code." }, { status: 503 }); } }

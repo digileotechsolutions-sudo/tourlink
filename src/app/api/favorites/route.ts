@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+export async function GET() { const user = await getCurrentUser(); if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 }); const favorites = await prisma.favorite.findMany({ where: { userId: user.id }, include: { trip: { include: { destination: true, images: true, operator: { select: { name: true, verificationLevel: true } } } } }, orderBy: { id: "desc" } }); return NextResponse.json({ favorites }); }
+export async function POST(request: Request) { const user = await getCurrentUser(); if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 }); try { const { tripId } = z.object({ tripId: z.string().min(1) }).parse(await request.json()); const trip = await prisma.trip.findUnique({ where: { id: tripId } }) ?? await prisma.trip.findUnique({ where: { slug: tripId } }); if (!trip) return NextResponse.json({ error: "Trip not found" }, { status: 404 }); const existing = await prisma.favorite.findFirst({ where: { userId: user.id, tripId: trip.id } }); if (existing) { await prisma.favorite.delete({ where: { id: existing.id } }); return NextResponse.json({ saved: false }); } await prisma.favorite.create({ data: { userId: user.id, tripId: trip.id } }); return NextResponse.json({ saved: true }, { status: 201 }); } catch { return NextResponse.json({ error: "Could not update favorites." }, { status: 400 }); } }

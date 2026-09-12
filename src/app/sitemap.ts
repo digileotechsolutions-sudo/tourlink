@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { trips, destinations, vehicles } from "@/lib/demo-data";
+export default function sitemap(): MetadataRoute.Sitemap { const base = process.env.NEXT_PUBLIC_APP_URL || "https://tourlink.ke"; return [{ url: base, changeFrequency: "daily", priority: 1 }, { url: `${base}/trips`, priority: .9 }, { url: `${base}/vehicles`, priority: .8 }, { url: `${base}/destinations`, priority: .8 }, ...trips.map(item => ({ url: `${base}/trips/${item.slug}`, priority: .7 })), ...vehicles.map(item => ({ url: `${base}/vehicles/${item.slug}`, priority: .6 })), ...destinations.map(item => ({ url: `${base}/trips?destination=${encodeURIComponent(item.name)}`, priority: .6 }))]; }

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TourLink | Kenya travel marketplace</title>
+  <style>
+    :root { color-scheme: light; --ink: #132b2b; --lagoon: #0f6b68; --sun: #e58b3c; --sand: #f4efe5; }
+    * { box-sizing: border-box; } body { margin: 0; font-family: Georgia, serif; color: var(--ink); background: var(--sand); }
+    header, main, footer { max-width: 1120px; margin: auto; padding: 24px; } header { display: flex; justify-content: space-between; align-items: center; }
+    nav a { margin-left: 18px; color: var(--ink); text-decoration: none; font: 700 14px system-ui, sans-serif; }
+    .hero { padding: 80px 24px 72px; } .eyebrow { color: var(--lagoon); font: 700 12px system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { max-width: 720px; margin: 12px 0; font-size: clamp(48px, 8vw, 88px); line-height: .95; } p { line-height: 1.7; }
+    .hero p { max-width: 560px; font: 18px/1.7 system-ui, sans-serif; color: #526565; } .button { display: inline-block; padding: 14px 20px; background: var(--sun); color: var(--ink); border-radius: 999px; font: 800 14px system-ui, sans-serif; text-decoration: none; }
+    section { padding: 36px 0; } h2 { font-size: 38px; margin: 8px 0 24px; } .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    article { background: white; border-radius: 12px; padding: 22px; } article h3 { margin: 0 0 8px; font-size: 22px; } article p { margin: 6px 0; font: 14px/1.6 system-ui, sans-serif; color: #647474; }
+    footer { border-top: 1px solid #d9d4ca; font: 13px system-ui, sans-serif; color: #647474; }
+  </style>
+</head>
+<body>
+  <header><strong>TOURLINK</strong><nav><a href="/api/trips/">Trips API</a><a href="/api/vehicles/">Vehicles API</a><a href="/django-admin/">Admin</a></nav></header>
+  <main>
+    <section class="hero"><div class="eyebrow">Kenya's travel marketplace</div><h1>Go further.<br><span style="color:var(--sun)">Feel more.</span></h1><p>Discover trips, hire trusted vehicles, and connect with local operators across Kenya.</p><a class="button" href="#trips">Explore trips</a></section>
+    <section id="trips"><div class="eyebrow">Made for the moment</div><h2>Trips worth the detour</h2><div class="grid">{% for trip in trips %}<article><h3>{{ trip.name }}</h3><p>{{ trip.destination.name }} · {{ trip.duration_days }} days</p><p>From KES {{ trip.price_per_person }}</p></article>{% empty %}<article><h3>New journeys are being added</h3><p>Use Django admin to publish your first trip.</p></article>{% endfor %}</div></section>
+    <section><div class="eyebrow">Move your way</div><h2>Verified vehicles</h2><div class="grid">{% for vehicle in vehicles %}<article><h3>{{ vehicle.name }}</h3><p>{{ vehicle.location }} · {{ vehicle.seating_capacity }} seats</p><p>KES {{ vehicle.price_per_day }} per day</p></article>{% empty %}<article><h3>Vehicles coming soon</h3><p>Use Django admin to publish a vehicle.</p></article>{% endfor %}</div></section>
+  </main>
+  <footer>TourLink · Built for better journeys across Kenya</footer>
+</body>
+</html>

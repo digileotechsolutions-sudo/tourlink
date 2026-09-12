@@ -1,0 +1,4 @@
+"use client";
+import { Heart, Loader2 } from "lucide-react";
+import { useState } from "react";
+export function FavoriteButton({ tripId }: { tripId: string }) { const [saved, setSaved] = useState(false); const [busy, setBusy] = useState(false); async function toggle() { setBusy(true); const response = await fetch("/api/favorites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tripId }) }); const data = await response.json(); setBusy(false); if (response.ok) setSaved(data.saved); } return <button type="button" onClick={toggle} disabled={busy} className={`grid h-11 w-11 place-items-center rounded-full border backdrop-blur-md transition ${saved ? "border-sun bg-sun text-ink" : "border-white/30 bg-ink/20 text-white hover:bg-white/20"}`} aria-label={saved ? "Remove from favorites" : "Save trip"}>{busy ? <Loader2 size={18} className="animate-spin" /> : <Heart size={18} fill={saved ? "currentColor" : "none"} />}</button>; }

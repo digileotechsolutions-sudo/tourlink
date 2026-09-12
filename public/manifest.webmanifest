@@ -1,0 +1,11 @@
+{
+  "name": "TourLink - Trips, Vehicles, Together",
+  "short_name": "TourLink",
+  "description": "Explore. Book. Travel across East Africa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8faf8",
+  "theme_color": "#075e63",
+  "orientation": "portrait-primary",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

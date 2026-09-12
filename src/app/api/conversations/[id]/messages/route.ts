@@ -1,0 +1,8 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+async function participant(id: string, userId: string) { return prisma.conversationParticipant.findFirst({ where: { conversationId: id, userId } }); }
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) { const user = await getCurrentUser(); if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 }); const { id } = await params; if (!await participant(id, user.id)) return NextResponse.json({ error: "Conversation not found" }, { status: 404 }); const messages = await prisma.message.findMany({ where: { conversationId: id }, include: { sender: { select: { id: true, name: true, avatarUrl: true } } }, orderBy: { createdAt: "asc" }, take: 100 }); return NextResponse.json({ messages }); }
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) { const user = await getCurrentUser(); if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 }); const { id } = await params; if (!await participant(id, user.id)) return NextResponse.json({ error: "Conversation not found" }, { status: 404 }); try { const { body } = z.object({ body: z.string().min(1).max(4000) }).parse(await request.json()); const message = await prisma.message.create({ data: { conversationId: id, senderId: user.id, body } }); await prisma.conversation.update({ where: { id }, data: { updatedAt: new Date() } }); return NextResponse.json({ message }, { status: 201 }); } catch { return NextResponse.json({ error: "Message could not be sent." }, { status: 400 }); } }

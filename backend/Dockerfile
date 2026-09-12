@@ -3,10 +3,9 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY requirements-django.txt ./
 RUN pip install --no-cache-dir -r requirements-django.txt
-COPY manage.py passenger_wsgi.py ./
+COPY manage.py ./
 COPY backend ./backend
 COPY core ./core
-COPY templates ./templates
 
 ENV DJANGO_DEBUG=false
 EXPOSE 8000

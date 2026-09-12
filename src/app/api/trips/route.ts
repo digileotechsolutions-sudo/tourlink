@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+export async function GET(request: Request) { const { searchParams } = new URL(request.url); const search = searchParams.get("search") || undefined; try { const trips = await prisma.trip.findMany({ where: { status: "PUBLISHED", ...(search ? { OR: [{ name: { contains: search, mode: "insensitive" } }, { startingPoint: { contains: search, mode: "insensitive" } }] } : {}) }, include: { destination: true, category: true, images: true }, orderBy: { featured: "desc" }, take: 24 }); return NextResponse.json({ trips }); } catch { return NextResponse.json({ error: "Catalog unavailable" }, { status: 503 }); } }

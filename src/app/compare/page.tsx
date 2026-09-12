@@ -1,0 +1,2 @@
+import { CompareView } from "@/components/compare-view";
+export default function ComparePage() { return <main className="min-h-screen bg-mist pb-24"><div className="container-page py-12"><p className="eyebrow">Make the right call</p><h1 className="display mt-2 text-5xl font-bold">Compare journeys.</h1><p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">See the details side by side, then choose the feeling that fits.</p><div className="mt-8"><CompareView /></div></div></main>; }

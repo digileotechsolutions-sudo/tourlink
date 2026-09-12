@@ -1,0 +1,2 @@
+import { AuthForm } from "@/components/auth-form";
+export default async function RegisterPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) { const params = await searchParams; const initialRole = params.role === "VEHICLE_OWNER" ? "VEHICLE_OWNER" : undefined; return <main className="auth-page"><AuthForm mode="register" initialRole={initialRole} /></main>; }

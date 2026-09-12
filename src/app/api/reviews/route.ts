@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+export async function POST(request: Request) { const user = await getCurrentUser(); if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 }); try { const input = z.object({ bookingId: z.string(), rating: z.number().int().min(1).max(5), communication: z.number().int().min(1).max(5).optional(), service: z.number().int().min(1).max(5).optional(), quality: z.number().int().min(1).max(5).optional(), value: z.number().int().min(1).max(5).optional(), body: z.string().min(10).max(2000) }).parse(await request.json()); const booking = await prisma.booking.findFirst({ where: { id: input.bookingId, travelerId: user.id, status: "COMPLETED" }, select: { id: true, tripId: true, vehicleId: true } }); if (!booking) return NextResponse.json({ error: "Reviews are available after a completed booking." }, { status: 400 }); const review = await prisma.review.create({ data: { ...input, authorId: user.id, tripId: booking.tripId, vehicleId: booking.vehicleId } }); return NextResponse.json({ review }, { status: 201 }); } catch { return NextResponse.json({ error: "You may have already reviewed this booking." }, { status: 400 }); } }

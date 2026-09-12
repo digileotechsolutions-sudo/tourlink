@@ -1,0 +1,6 @@
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { getOperator } from "@/lib/operator";
+import { prisma } from "@/lib/prisma";
+import { OperatorListings } from "@/components/operator-listings";
+export default async function ListingsPage() { try { const user = await getOperator(); const trips = await prisma.trip.findMany({ where: { operatorId: user.id }, include: { destination: true, images: { orderBy: { sortOrder: "asc" } }, _count: { select: { bookings: true } } }, orderBy: { updatedAt: "desc" } }); return <div className="rounded-2xl bg-white p-5 shadow-soft sm:p-7"><div className="flex items-center justify-between"><div><p className="eyebrow">Your catalogue</p><h2 className="mt-1 text-2xl font-black">Trips</h2></div><Link href="/dashboard/listings/new" className="flex items-center gap-2 rounded-full bg-sun px-4 py-2.5 text-xs font-extrabold"><Plus size={15} /> New trip</Link></div><div className="mt-7"><OperatorListings trips={trips.map(trip => ({ id: trip.id, slug: trip.slug, name: trip.name, destination: trip.destination.name, status: trip.status, bookings: trip._count.bookings, image: trip.images[0]?.url || null }))} /></div></div>; } catch { return null; } }

@@ -1,0 +1,9 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+export function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/login" || pathname === "/register" || pathname === "/admin/login") return null;
+  return <footer className="border-t border-slate-200 bg-white pb-24 pt-14 sm:pb-10"><div className="container-page grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]"><div><p className="text-xl font-black tracking-[-.06em]">TOUR<span className="text-sun">link</span></p><p className="mt-3 max-w-xs text-sm leading-6 text-slate-500">Trips · Vehicles · Together.<br />Making every journey feel closer.</p></div><div><h3 className="text-xs font-black uppercase tracking-wider text-ink">Discover</h3><div className="mt-4 grid gap-3 text-sm text-slate-500"><Link href="/trips">Find a trip</Link><Link href="/vehicles">Hire a vehicle</Link><Link href="/destinations">Destinations</Link></div></div><div><h3 className="text-xs font-black uppercase tracking-wider text-ink">Join us</h3><div className="mt-4 grid gap-3 text-sm text-slate-500"><Link href="/register?role=operator">List your trips</Link><Link href="/register?role=vehicle">List your vehicle</Link><Link href="/how-it-works">How it works</Link></div></div><div><h3 className="text-xs font-black uppercase tracking-wider text-ink">TourLink</h3><div className="mt-4 grid gap-3 text-sm text-slate-500"><Link href="/about">Our story</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></div></div></div><div className="container-page mt-12 border-t border-slate-100 pt-5 text-xs text-slate-400">© 2025 TourLink Kenya · Built for the curious.</div></footer>;
+}

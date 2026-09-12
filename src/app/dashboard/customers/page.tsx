@@ -1,0 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { OperatorCustomers } from "@/components/operator-extra-views";
+export default async function CustomersPage() { const user = await getCurrentUser(); if (!user || !["OPERATOR", "VEHICLE_OWNER"].includes(user.role)) redirect("/dashboard"); const bookings = await prisma.booking.findMany({ where: user.role === "VEHICLE_OWNER" ? { vehicle: { ownerId: user.id } } : { trip: { operatorId: user.id } }, select: { totalAmount: true, traveler: { select: { id: true, name: true, email: true, phone: true } } } }); const grouped = new Map<string, { id: string; name: string; email: string; phone: string | null; bookings: number; spent: number }>(); for (const booking of bookings) { const current = grouped.get(booking.traveler.id) || { ...booking.traveler, bookings: 0, spent: 0 }; current.bookings += 1; current.spent += booking.totalAmount; grouped.set(booking.traveler.id, current); } return <OperatorCustomers customers={[...grouped.values()]} />; }

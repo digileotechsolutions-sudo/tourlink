@@ -1,0 +1,7 @@
+"use client";
+import Link from "next/link";
+import { GitCompareArrows } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const key = "tourlink_compare";
+export function CompareButton({ slug }: { slug: string }) { const [selected, setSelected] = useState(false); const [count, setCount] = useState(0); useEffect(() => { const values: string[] = JSON.parse(localStorage.getItem(key) || "[]"); setSelected(values.includes(slug)); setCount(values.length); }, [slug]); function toggle(event: React.MouseEvent) { event.preventDefault(); event.stopPropagation(); const values: string[] = JSON.parse(localStorage.getItem(key) || "[]"); const next = values.includes(slug) ? values.filter(value => value !== slug) : values.length < 3 ? [...values, slug] : values; localStorage.setItem(key, JSON.stringify(next)); setSelected(next.includes(slug)); setCount(next.length); } return <span className="absolute bottom-3 right-3 flex items-center gap-2"><button type="button" onClick={toggle} className={`grid h-9 w-9 place-items-center rounded-full border text-white backdrop-blur-md ${selected ? "border-sun bg-sun text-ink" : "border-white/30 bg-ink/30"}`} aria-label="Compare trip"><GitCompareArrows size={15} /></button>{count > 0 && <Link onClick={event => event.stopPropagation()} href="/compare" className="rounded-full bg-white px-2.5 py-1.5 text-[10px] font-black text-ink">Compare {count}</Link>}</span>; }
