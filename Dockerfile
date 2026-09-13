@@ -1,13 +1,19 @@
-FROM python:3.12-slim
-
+FROM node:20-alpine AS deps
 WORKDIR /app
-COPY requirements-django.txt ./
-RUN pip install --no-cache-dir -r requirements-django.txt
-COPY manage.py passenger_wsgi.py ./
-COPY backend ./backend
-COPY core ./core
-COPY templates ./templates
+COPY package*.json ./
+RUN npm ci
 
-ENV DJANGO_DEBUG=false
-EXPOSE 8000
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npx prisma generate && npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+EXPOSE 3000
+CMD ["node", "server.js"]
