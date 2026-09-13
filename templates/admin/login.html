@@ -1,0 +1,277 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate "Log in" %} | {{ site_title|default:_('TourLink Admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  :root {
+    --tourlink-forest: #173b2a;
+    --tourlink-green: #216b42;
+    --tourlink-muted: #718279;
+    --tourlink-line: #d8e4dc;
+  }
+
+  body.login {
+    min-height: 100vh;
+    background: #eef5f1;
+  }
+
+  #container {
+    min-height: 100vh;
+    background: transparent;
+  }
+
+  #header {
+    display: none;
+  }
+
+  #content {
+    width: min(1040px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 32px 0;
+  }
+
+  .tourlink-login-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
+    min-height: 620px;
+    overflow: hidden;
+    border: 1px solid #dce8e0;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(24, 55, 39, .12);
+  }
+
+  .tourlink-login-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 56px;
+    color: #fff;
+    background: linear-gradient(rgba(16, 48, 34, .3), rgba(16, 48, 34, .76)), url('{% static "form-image1.png" %}') center / cover;
+  }
+
+  .tourlink-login-visual::before {
+    content: 'TL';
+    position: absolute;
+    top: 56px;
+    left: 56px;
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .08em;
+  }
+
+  .tourlink-login-kicker {
+    margin-bottom: 14px;
+    color: #d8f4df;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .tourlink-login-visual h1 {
+    max-width: 390px;
+    margin: 0 0 16px;
+    color: #fff;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -.04em;
+  }
+
+  .tourlink-login-visual p {
+    max-width: 390px;
+    margin: 0;
+    color: rgba(255,255,255,.86);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .tourlink-login-form {
+    align-self: center;
+    width: min(100%, 390px);
+    padding: 56px 42px;
+  }
+
+  .tourlink-login-form h2 {
+    margin: 0 0 8px;
+    color: var(--tourlink-forest);
+    font-size: 30px;
+    letter-spacing: -.04em;
+  }
+
+  .tourlink-login-subtitle {
+    margin: 0 0 32px;
+    color: var(--tourlink-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .tourlink-login-form .form-row {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .tourlink-login-form label {
+    display: block;
+    margin: 0 0 7px;
+    color: #294438;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .tourlink-login-form input[type="text"],
+  .tourlink-login-form input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid var(--tourlink-line);
+    border-radius: 9px;
+    background: #fbfdfb;
+    color: #173b2a;
+    font-size: 14px;
+  }
+
+  .tourlink-login-form input:focus {
+    border-color: var(--tourlink-green);
+    box-shadow: 0 0 0 4px rgba(33, 107, 66, .12);
+    outline: none;
+  }
+
+  .tourlink-login-form .submit-row {
+    margin: 26px 0 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .tourlink-login-form input[type="submit"] {
+    width: 100%;
+    padding: 14px 20px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--tourlink-green);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .tourlink-login-form input[type="submit"]:hover {
+    background: #174d2f;
+  }
+
+  .tourlink-login-form .errornote {
+    margin: 0 0 18px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 12px;
+  }
+
+  .tourlink-login-form .password-reset-link {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .tourlink-login-form a {
+    color: var(--tourlink-green);
+    font-weight: 700;
+  }
+
+  @media (max-width: 720px) {
+    #content {
+      width: min(100% - 24px, 480px);
+      padding: 12px 0;
+    }
+
+    .tourlink-login-shell {
+      display: block;
+      min-height: auto;
+      border-radius: 16px;
+    }
+
+    .tourlink-login-visual {
+      min-height: 230px;
+      padding: 32px 24px;
+    }
+
+    .tourlink-login-visual::before {
+      top: 24px;
+      left: 24px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .tourlink-login-visual h1 {
+      font-size: 30px;
+    }
+
+    .tourlink-login-form {
+      width: auto;
+      padding: 34px 22px 30px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block branding %}{% endblock %}
+
+{% block content %}
+<div class="tourlink-login-shell">
+  <section class="tourlink-login-visual" aria-label="TourLink administration">
+    <div class="tourlink-login-kicker">TourLink administration</div>
+    <h1>Keep every journey moving.</h1>
+    <p>Manage trusted travel experiences, providers, and marketplace operations from one secure workspace.</p>
+  </section>
+
+  <section class="tourlink-login-form">
+    <h2>{% translate "Sign in" %}</h2>
+    <p class="tourlink-login-subtitle">Use your administrator account to continue.</p>
+
+    {% if form.errors and not form.non_field_errors %}
+      <p class="errornote">{% translate "Please correct the error below." %}</p>
+    {% endif %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <p class="errornote">{{ error }}</p>
+      {% endfor %}
+    {% endif %}
+
+    <form action="{{ app_path }}" method="post" id="login-form">
+      {% csrf_token %}
+      <div class="form-row">
+        {{ form.username.errors }}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+      <div class="form-row">
+        {{ form.password.errors }}
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}">
+      </div>
+      <div class="submit-row">
+        <input type="submit" value="{% translate 'Sign in' %}">
+      </div>
+    </form>
+
+    {% url 'admin_password_reset' as password_reset_url %}
+    {% if password_reset_url %}
+      <p class="password-reset-link"><a href="{{ password_reset_url }}">{% translate 'Forgotten your password?' %}</a></p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

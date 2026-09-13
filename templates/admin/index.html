@@ -1,0 +1,100 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Dashboard | TourLink Admin{% endblock %}
+
+{% block content %}
+<div class="tourlink-dashboard">
+  <section class="tourlink-welcome">
+    <div>
+      <span class="tourlink-eyebrow">Operations overview</span>
+      <h1>Good to see you, {{ user.get_short_name|default:user.username }}.</h1>
+      <p>Keep the TourLink marketplace trusted, useful, and ready for the next journey.</p>
+    </div>
+  </section>
+
+  <section class="tourlink-stats" aria-label="Administration summary">
+    <div><span class="tourlink-stat-label">Workspace</span><strong>TourLink Admin</strong><small>Marketplace control center</small></div>
+    <div><span class="tourlink-stat-label">Access</span><strong>Administrator</strong><small>Full management permissions</small></div>
+    <div><span class="tourlink-stat-label">Region</span><strong>Kenya</strong><small>Local travel experiences</small></div>
+  </section>
+
+  <section class="tourlink-actions" aria-label="Quick actions">
+    <div><span class="tourlink-eyebrow">Quick access</span><h2>Start with a task</h2></div>
+    <div class="tourlink-action-links">
+      <a href="{% url 'admin:auth_user_changelist' %}">Review users <span aria-hidden="true">&#8594;</span></a>
+      <a href="{% url 'admin:auth_group_changelist' %}">Manage permissions <span aria-hidden="true">&#8594;</span></a>
+    </div>
+  </section>
+
+  {% if app_list %}
+    <section class="tourlink-apps">
+      <div class="tourlink-section-heading">
+        <div><span class="tourlink-eyebrow">Manage</span><h2>Administration tools</h2></div>
+        <span class="tourlink-tool-count">{{ app_list|length }} areas</span>
+      </div>
+      <div class="tourlink-app-grid">
+        {% for app in app_list %}
+          <article class="tourlink-app-card">
+            <div class="tourlink-app-icon">{% if app.app_label == 'auth' %}ID{% else %}DB{% endif %}</div>
+            <div class="tourlink-app-content">
+              <h3>{{ app.name }}</h3>
+              <ul>
+                {% for model in app.models %}
+                  <li>
+                    {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}<span>{{ model.name }}</span>{% endif %}
+                    {% if model.add_url %}<a class="addlink" href="{{ model.add_url }}">{% translate 'Add' %}</a>{% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <section class="tourlink-empty">
+      <span class="tourlink-eyebrow">Ready for setup</span>
+      <h2>No management modules yet</h2>
+      <p>Register your TourLink models in the Django admin to manage them here.</p>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .tourlink-dashboard { display: grid; gap: 24px; }
+  .tourlink-welcome { position: relative; display: flex; min-height: 220px; align-items: center; overflow: hidden; padding: 38px 42px; border-radius: 18px; background: #063b00; color: #fff; }
+  .tourlink-welcome::after { content: ""; position: absolute; right: -90px; bottom: -140px; width: 360px; height: 360px; border: 42px solid rgba(38, 98, 16, .72); border-radius: 50%; }
+  .tourlink-welcome > div { position: relative; z-index: 1; max-width: 600px; }
+  .tourlink-welcome h1 { margin: 10px 0 12px; color: #fff; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.04em; }
+  .tourlink-welcome p { max-width: 520px; margin: 0; color: rgba(255,255,255,.78); font-size: 14px; line-height: 1.7; }
+  .tourlink-eyebrow { color: #86c89a; font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .tourlink-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .tourlink-stats > div { display: grid; gap: 5px; padding: 21px; border: 1px solid var(--tourlink-line); border-radius: 14px; background: #fff; }
+  .tourlink-stat-label, .tourlink-stats small, .tourlink-tool-count { color: var(--tourlink-muted); font-size: 11px; }
+  .tourlink-stats strong { color: var(--tourlink-forest); font-size: 19px; }
+  .tourlink-actions { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 21px 24px; border: 1px solid #cfe1d4; border-radius: 14px; background: #e5f2e8; }
+  .tourlink-actions h2 { margin: 5px 0 0; color: var(--tourlink-forest); font-size: 18px; letter-spacing: -.02em; }
+  .tourlink-action-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tourlink-action-links a { display: inline-flex; align-items: center; gap: 14px; padding: 11px 15px; border: 1px solid #b8d2be; border-radius: 9px; background: #fff; color: var(--tourlink-green); font-size: 12px; font-weight: 800; }
+  .tourlink-action-links a:hover { border-color: var(--tourlink-green); background: var(--tourlink-green); color: #fff; }
+  .tourlink-section-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 12px; }
+  .tourlink-section-heading h2 { margin: 6px 0 0; color: var(--tourlink-forest); font-size: 24px; letter-spacing: -.03em; }
+  .tourlink-app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+  .tourlink-app-card { display: flex; gap: 15px; min-height: 130px; padding: 21px; border: 1px solid var(--tourlink-line); border-radius: 14px; background: #fff; box-shadow: 0 8px 24px rgba(24,55,39,.04); }
+  .tourlink-app-icon { display: grid; flex: 0 0 40px; height: 40px; place-items: center; border-radius: 11px; background: #e5f2e8; color: var(--tourlink-green); font-size: 11px; font-weight: 800; }
+  .tourlink-app-content { min-width: 0; flex: 1; }
+  .tourlink-app-content h3 { margin: 1px 0 11px; color: var(--tourlink-forest); font-size: 16px; }
+  .tourlink-app-content ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .tourlink-app-content li { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--tourlink-muted); font-size: 12px; }
+  .tourlink-app-content li a { font-weight: 700; }
+  .tourlink-app-content .addlink { color: #789082; font-size: 10px; font-weight: 600; }
+  .tourlink-empty { padding: 40px; border: 1px dashed #b8cec0; border-radius: 14px; background: #fff; }
+  .tourlink-empty h2 { margin: 8px 0; color: var(--tourlink-forest); }
+  .tourlink-empty p { margin: 0; color: var(--tourlink-muted); }
+  @media (max-width: 700px) { .tourlink-welcome { min-height: 250px; padding: 28px 24px; } .tourlink-welcome::after { right: -150px; bottom: -150px; width: 300px; height: 300px; } .tourlink-stats { grid-template-columns: 1fr; } .tourlink-actions { display: grid; gap: 16px; } .tourlink-action-links { display: grid; } .tourlink-action-links a { justify-content: space-between; } .tourlink-section-heading { align-items: start; } }
+</style>
+{% endblock %}
